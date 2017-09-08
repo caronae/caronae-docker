@@ -37,6 +37,7 @@ services:
       - ./nginx/sites:/etc/nginx/sites-available
     ports:
       - 80:80
+      - 81:81
     depends_on:
       - caronae-backend
 
