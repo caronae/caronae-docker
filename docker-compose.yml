@@ -1,0 +1,62 @@
+version: '2'
+
+services:
+  caronae-backend:
+    container_name: caronae-backend
+    image: caronae/backend
+    expose:
+      - 9000
+    depends_on:
+      - postgres
+      - redis
+    env_file: .env
+
+  caronae-backend-worker:
+    container_name: caronae-backend-worker
+    image: caronae/backend-worker
+    depends_on:
+      - caronae-backend
+    env_file: .env
+
+  caronae-ufrj-authentication:
+    container_name: caronae-ufrj-authentication
+    image: caronae/ufrj-authentication
+    expose:
+      - 9000
+    env_file: .env
+
+  nginx:
+    container_name: nginx
+    image: caronae/nginx
+    build:
+      context: nginx
+    volumes_from:
+      - caronae-backend
+      - caronae-ufrj-authentication
+    volumes:
+      - ./nginx/sites:/etc/nginx/sites-available
+    ports:
+      - 80:80
+    depends_on:
+      - caronae-backend
+
+  postgres:
+    container_name: postgres
+    image: postgres:9.6-alpine
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=caronae
+      - POSTGRES_DB=caronae
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+    volumes:
+      - redis:/data
+
+volumes:
+  postgres:
+  redis:
