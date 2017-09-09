@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+  nginx:
+    build:
+      args:
+        - ENABLE_SSL=true
+    volumes:
+      - /var/caronae/certs:/etc/nginx/ssl
+      - /etc/letsencrypt:/etc/letsencrypt
+    ports:
+      - 80:80
+      - 443:443

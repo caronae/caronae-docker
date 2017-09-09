@@ -4,8 +4,6 @@ services:
   caronae-backend:
     container_name: caronae-backend
     image: caronae/backend
-    expose:
-      - 9000
     depends_on:
       - postgres
       - redis
@@ -21,8 +19,6 @@ services:
   caronae-ufrj-authentication:
     container_name: caronae-ufrj-authentication
     image: caronae/ufrj-authentication
-    expose:
-      - 9000
     env_file: .env
 
   nginx:
@@ -30,21 +26,12 @@ services:
     image: caronae/nginx
     build:
       context: nginx
-      args:
-        - ENABLE_SSL=${CARONAE_ENABLE_SSL}
-    volumes:
-      - /var/caronae/certs:/etc/nginx/ssl
-      - /etc/letsencrypt:/etc/letsencrypt
     volumes_from:
       - caronae-backend
       - caronae-ufrj-authentication
     ports:
       - 8000:8000
       - 8001:8001
-      - 80:80
-      - 443:443
-    depends_on:
-      - caronae-backend
 
   postgres:
     container_name: postgres
