@@ -30,14 +30,18 @@ services:
     image: caronae/nginx
     build:
       context: nginx
+      args:
+        - ENABLE_SSL=${CARONAE_ENABLE_SSL}
+    volumes:
+      - ./nginx/ssl:/etc/nginx/ssl
     volumes_from:
       - caronae-backend
       - caronae-ufrj-authentication
-    volumes:
-      - ./nginx/sites:/etc/nginx/sites-available
     ports:
+      - 8000:8000
+      - 8001:8001
       - 80:80
-      - 81:81
+      - 443:443
     depends_on:
       - caronae-backend
 
