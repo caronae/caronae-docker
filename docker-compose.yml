@@ -33,7 +33,7 @@ services:
       args:
         - ENABLE_SSL=${CARONAE_ENABLE_SSL}
     volumes:
-      - ./nginx/ssl:/etc/nginx/ssl
+      - /var/caronae/certs:/ssl:/etc/nginx/ssl
     volumes_from:
       - caronae-backend
       - caronae-ufrj-authentication
