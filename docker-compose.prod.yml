@@ -12,12 +12,9 @@ services:
       - .env
 
   caronae-ufrj-authentication:
-    container_name: caronae-ufrj-authentication
-    image: caronae/ufrj-authentication
     env_file:
       - config.env
       - .env
-    restart: always
 
   nginx:
     build:

@@ -22,6 +22,12 @@ services:
       - APP_KEY=base64:/h4k6fjT8lmQ60lUXpGrPqJzFRBmMllYS2TJRLBEz1c=
     restart: always
 
+  caronae-ufrj-authentication:
+    container_name: caronae-ufrj-authentication
+    image: caronae/ufrj-authentication
+    env_file: config.env
+    restart: always
+
   nginx:
     container_name: nginx
     image: caronae/nginx
