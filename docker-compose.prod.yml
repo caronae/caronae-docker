@@ -23,6 +23,7 @@ services:
       args:
         - ENABLE_SSL=true
     volumes:
+      - /var/caronae/caronae-site
       - /var/caronae/certs:/etc/nginx/ssl
       - /etc/letsencrypt:/etc/letsencrypt
     volumes_from:
