@@ -28,6 +28,7 @@ O backend está acessível em [http://localhost:8000](http://localhost:8000).
 
 * caronae-backend
 * caronae-backend-worker
+* caronae-backend-task-scheduler
 * caronae-ufrj-authentication
 * nginx (com HTTPS e caronae-site)
 * postgres

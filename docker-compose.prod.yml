@@ -11,6 +11,17 @@ services:
       - config.env
       - .env
 
+  caronae-backend-task-scheduler:
+    container_name: caronae-backend-task-scheduler
+    image: caronae/backend
+    command: crond -f
+    depends_on:
+      - caronae-backend
+    env_file:
+      - config.env
+      - .env
+    restart: always
+
   caronae-ufrj-authentication:
     container_name: caronae-ufrj-authentication
     image: caronae/ufrj-authentication
