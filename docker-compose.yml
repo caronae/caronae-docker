@@ -10,6 +10,7 @@ services:
     env_file: config.env
     environment:
       - APP_KEY=base64:/h4k6fjT8lmQ60lUXpGrPqJzFRBmMllYS2TJRLBEz1c=
+    restart: always
 
   caronae-backend-worker:
     container_name: caronae-backend-worker
@@ -19,6 +20,7 @@ services:
     env_file: config.env
     environment:
       - APP_KEY=base64:/h4k6fjT8lmQ60lUXpGrPqJzFRBmMllYS2TJRLBEz1c=
+    restart: always
 
   nginx:
     container_name: nginx
@@ -30,6 +32,7 @@ services:
     ports:
       - 8000:8000
       - 8001:8001
+    restart: always
 
   postgres:
     container_name: postgres
@@ -41,12 +44,14 @@ services:
     environment:
       - POSTGRES_USER=caronae
       - POSTGRES_DB=caronae
+    restart: always
 
   redis:
     container_name: redis
     image: redis:alpine
     volumes:
       - redis:/data
+    restart: always
 
 volumes:
   postgres:

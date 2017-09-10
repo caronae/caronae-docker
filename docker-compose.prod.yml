@@ -17,6 +17,7 @@ services:
     env_file:
       - config.env
       - .env
+    restart: always
 
   nginx:
     build:
