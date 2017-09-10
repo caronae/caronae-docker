@@ -30,3 +30,9 @@ services:
     ports:
       - 80:80
       - 443:443
+
+volumes:
+  postgres:
+    external: true
+  redis:
+    external: true
