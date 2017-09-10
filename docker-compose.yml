@@ -18,12 +18,6 @@ services:
     env_file: config.env
     restart: always
 
-  caronae-ufrj-authentication:
-    container_name: caronae-ufrj-authentication
-    image: caronae/ufrj-authentication
-    env_file: config.env
-    restart: always
-
   nginx:
     container_name: nginx
     image: caronae/nginx
@@ -33,7 +27,6 @@ services:
       - caronae-backend
     ports:
       - 8000:8000
-      - 8001:8001
     restart: always
 
   postgres:
