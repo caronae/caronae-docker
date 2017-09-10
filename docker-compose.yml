@@ -7,19 +7,18 @@ services:
     depends_on:
       - postgres
       - redis
-    env_file: .env
+    env_file: config.env
+    environment:
+      - APP_KEY=base64:/h4k6fjT8lmQ60lUXpGrPqJzFRBmMllYS2TJRLBEz1c=
 
   caronae-backend-worker:
     container_name: caronae-backend-worker
     image: caronae/backend-worker
     depends_on:
       - caronae-backend
-    env_file: .env
-
-  caronae-ufrj-authentication:
-    container_name: caronae-ufrj-authentication
-    image: caronae/ufrj-authentication
-    env_file: .env
+    env_file: config.env
+    environment:
+      - APP_KEY=base64:/h4k6fjT8lmQ60lUXpGrPqJzFRBmMllYS2TJRLBEz1c=
 
   nginx:
     container_name: nginx
@@ -28,7 +27,6 @@ services:
       context: nginx
     volumes_from:
       - caronae-backend
-      - caronae-ufrj-authentication
     ports:
       - 8000:8000
       - 8001:8001
