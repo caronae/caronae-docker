@@ -8,8 +8,6 @@ services:
       - postgres
       - redis
     env_file: config.env
-    environment:
-      - APP_KEY=base64:/h4k6fjT8lmQ60lUXpGrPqJzFRBmMllYS2TJRLBEz1c=
     restart: always
 
   caronae-backend-worker:
@@ -18,8 +16,6 @@ services:
     depends_on:
       - caronae-backend
     env_file: config.env
-    environment:
-      - APP_KEY=base64:/h4k6fjT8lmQ60lUXpGrPqJzFRBmMllYS2TJRLBEz1c=
     restart: always
 
   caronae-ufrj-authentication:
