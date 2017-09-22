@@ -1,0 +1,14 @@
+version: 2
+
+jobs:
+  build:
+      - setup_remote_docker
+      - run:
+          name: Build Docker images
+          command: docker build -t caronae/php:latest php
+      - run:
+          name: Publish Docker images
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push caronae/php
+
