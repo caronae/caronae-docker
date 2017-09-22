@@ -5,6 +5,7 @@ jobs:
     machine:
       enabled: true
     steps:
+      - checkout
       - run:
           name: Build images
           command: docker build -t caronae/php:latest php
