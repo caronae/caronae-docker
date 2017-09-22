@@ -1,14 +1,20 @@
 version: 2
 
 jobs:
-  steps:
-      - setup_remote_docker
-      - run:
-          name: Build Docker images
-          command: docker build -t caronae/php:latest php
-      - run:
-          name: Publish Docker images
-          command: |
-            docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker push caronae/php
+  create_docker_images:
+    steps:
+        - setup_remote_docker
+        - run:
+            name: Build images
+            command: docker build -t caronae/php:latest php
+        - run:
+            name: Publish images
+            command: |
+              docker login -u $DOCKER_USER -p $DOCKER_PASS
+              docker push caronae/php
 
+workflows:
+  version: 2
+  create_docker_images:
+    jobs:
+      - create_docker_images
