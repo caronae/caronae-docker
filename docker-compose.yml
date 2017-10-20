@@ -8,8 +8,6 @@ services:
       - postgres
       - redis
     env_file: config.env
-    volumes:
-      - ../backend:/var/www
     restart: always
 
   caronae-backend-worker:
