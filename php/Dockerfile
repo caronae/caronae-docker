@@ -5,6 +5,9 @@ RUN rm -rf html
 
 # Configure PHP extensions and dependencies
 RUN set -ex && apk --no-cache add \
+    ca-certificates \
+    openssh-client \
+    git \
     postgresql-dev \
     libxml2-dev \
     curl-dev
