@@ -3,16 +3,18 @@ version: '2'
 services:
   caronae-backend:
     container_name: caronae-backend
-    image: caronae/backend
+    image: caronae/backend:${CARONAE_ENV_TAG}
     depends_on:
       - postgres
       - redis
     env_file: config.env
+    volumes:
+      - ../backend:/var/www
     restart: always
 
   caronae-backend-worker:
     container_name: caronae-backend-worker
-    image: caronae/backend-worker
+    image: caronae/backend-worker:${CARONAE_ENV_TAG}
     depends_on:
       - caronae-backend
     env_file: config.env

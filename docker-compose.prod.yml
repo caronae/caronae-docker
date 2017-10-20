@@ -13,7 +13,7 @@ services:
 
   caronae-backend-task-scheduler:
     container_name: caronae-backend-task-scheduler
-    image: caronae/backend
+    image: caronae/backend:${CARONAE_ENV_TAG}
     command: crond -f
     depends_on:
       - caronae-backend
