@@ -24,7 +24,7 @@ services:
 
   caronae-ufrj-authentication:
     container_name: caronae-ufrj-authentication
-    image: caronae/ufrj-authentication
+    image: caronae/ufrj-authentication:${CARONAE_ENV_TAG}
     env_file:
       - config.env
       - .env
