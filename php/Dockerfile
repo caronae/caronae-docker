@@ -9,6 +9,7 @@ RUN set -ex && apk --no-cache add \
     openssh-client \
     git \
     postgresql-dev \
+    postgresql \
     libxml2-dev \
     curl-dev
 
