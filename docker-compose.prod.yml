@@ -2,11 +2,13 @@ version: '2'
 
 services:
   caronae-backend:
+    image: caronae/backend:${CARONAE_ENV_TAG}
     env_file:
       - config.env
       - .env
 
   caronae-backend-worker:
+    image: caronae/backend:${CARONAE_ENV_TAG}
     env_file:
       - config.env
       - .env
