@@ -8,10 +8,9 @@ RUN set -ex && apk --no-cache add \
     ca-certificates \
     openssh-client \
     git \
-    postgresql-dev \
-    postgresql \
     libxml2-dev \
-    curl-dev
+    curl-dev && \
+    apk --no-cache add postgresql-dev postgresql=9.6.5-r0 --repository http://dl-cdn.alpinelinux.org/alpine/v3.6/main/
 
 RUN docker-php-ext-install pdo pdo_pgsql pgsql zip xml curl mbstring
 
