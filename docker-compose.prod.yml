@@ -8,10 +8,12 @@ services:
       - .env
 
   caronae-backend-worker:
-    image: caronae/backend:${CARONAE_ENV_TAG}
+    image: caronae/backend-worker:${CARONAE_ENV_TAG}
     env_file:
       - config.env
       - .env
+    environment:
+      - LOG_STREAM=php://stdout
 
   caronae-backend-task-scheduler:
     container_name: caronae-backend-task-scheduler
