@@ -6,6 +6,12 @@ services:
     env_file:
       - config.env
       - .env
+    logging:
+      driver: awslogs
+      options:
+         awslogs-region: ${AWS_LOG_REGION}
+         awslogs-group: ${AWS_LOG_GROUP}
+         awslogs-stream: backend
 
   caronae-backend-worker:
     image: caronae/backend-worker:${CARONAE_ENV_TAG}
@@ -14,6 +20,12 @@ services:
       - .env
     environment:
       - LOG_STREAM=php://stdout
+    logging:
+      driver: awslogs
+      options:
+         awslogs-region: ${AWS_LOG_REGION}
+         awslogs-group: ${AWS_LOG_GROUP}
+         awslogs-stream: backend-worker
 
   caronae-backend-task-scheduler:
     container_name: caronae-backend-task-scheduler
@@ -25,6 +37,12 @@ services:
       - config.env
       - .env
     restart: always
+    logging:
+      driver: awslogs
+      options:
+         awslogs-region: ${AWS_LOG_REGION}
+         awslogs-group: ${AWS_LOG_GROUP}
+         awslogs-stream: backend-task-scheduler
 
   caronae-ufrj-authentication:
     container_name: caronae-ufrj-authentication
@@ -33,6 +51,12 @@ services:
       - config.env
       - .env
     restart: always
+    logging:
+      driver: awslogs
+      options:
+         awslogs-region: ${AWS_LOG_REGION}
+         awslogs-group: ${AWS_LOG_GROUP}
+         awslogs-stream: ufrj-authentication
 
   nginx:
     build:
@@ -49,6 +73,28 @@ services:
     ports:
       - 80:80
       - 443:443
+    logging:
+      driver: awslogs
+      options:
+         awslogs-region: ${AWS_LOG_REGION}
+         awslogs-group: ${AWS_LOG_GROUP}
+         awslogs-stream: nginx
+
+  postgres:
+    logging:
+      driver: awslogs
+      options:
+         awslogs-region: ${AWS_LOG_REGION}
+         awslogs-group: ${AWS_LOG_GROUP}
+         awslogs-stream: postgres
+
+  redis:
+    logging:
+      driver: awslogs
+      options:
+         awslogs-region: ${AWS_LOG_REGION}
+         awslogs-group: ${AWS_LOG_GROUP}
+         awslogs-stream: redis
 
 volumes:
   postgres:
