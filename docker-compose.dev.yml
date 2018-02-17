@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+  caronae-backend:
+    build:
+      context: ../backend
+      dockerfile: docker/Dockerfile.app
+    volumes:
+      - ../backend:/var/www 
+
+  caronae-ufrj-authentication:
+    container_name: caronae-ufrj-authentication
+    image: caronae/ufrj-authentication
+    build:
+      context: ../ufrj-authentication
+    env_file:
+      - config.env
+    volumes:
+      - ../ufrj-authentication:/var/www/ufrj-authentication
+
+  nginx:
+    build:
+      context: nginx
+      args:
+        - ENABLE_UFRJ_AUTHENTICATION=true
+    volumes_from:
+      - caronae-backend
+      - caronae-ufrj-authentication
+    ports:
+      - 8000:8000
+      - 8001:8001
