@@ -8,7 +8,6 @@ services:
       - postgres
       - redis
     env_file: config.env
-    restart: always
 
   caronae-backend-worker:
     container_name: caronae-backend-worker
@@ -16,7 +15,6 @@ services:
     depends_on:
       - caronae-backend
     env_file: config.env
-    restart: always
 
   nginx:
     container_name: nginx
@@ -27,7 +25,6 @@ services:
       - caronae-backend
     ports:
       - 8000:8000
-    restart: always
 
   postgres:
     container_name: postgres
@@ -39,14 +36,12 @@ services:
     environment:
       - POSTGRES_USER=caronae
       - POSTGRES_DB=caronae
-    restart: always
 
   redis:
     container_name: redis
     image: redis:alpine
     volumes:
       - redis:/data
-    restart: always
 
 volumes:
   postgres:

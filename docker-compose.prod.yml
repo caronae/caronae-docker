@@ -6,6 +6,7 @@ services:
     env_file:
       - config.env
       - .env
+    restart: always
     logging:
       driver: awslogs
       options:
@@ -20,6 +21,7 @@ services:
       - .env
     environment:
       - LOG_STREAM=php://stdout
+    restart: always
     logging:
       driver: awslogs
       options:
@@ -73,6 +75,7 @@ services:
     ports:
       - 80:80
       - 443:443
+    restart: always
     logging:
       driver: awslogs
       options:
@@ -81,6 +84,7 @@ services:
          awslogs-stream: nginx
 
   postgres:
+    restart: always
     logging:
       driver: awslogs
       options:
@@ -89,6 +93,7 @@ services:
          awslogs-stream: postgres
 
   redis:
+    restart: always
     logging:
       driver: awslogs
       options:
