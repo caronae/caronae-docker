@@ -84,6 +84,8 @@ services:
          awslogs-stream: nginx
 
   postgres:
+    volumes:
+      - /data/postgres:/var/lib/postgresql/data
     restart: always
     logging:
       driver: awslogs
@@ -93,6 +95,8 @@ services:
          awslogs-stream: postgres
 
   redis:
+    volumes:
+      - /data/redis:/data
     restart: always
     logging:
       driver: awslogs
@@ -100,9 +104,3 @@ services:
          awslogs-region: ${AWS_LOG_REGION}
          awslogs-group: ${AWS_LOG_GROUP}
          awslogs-stream: redis
-
-volumes:
-  postgres:
-    external: true
-  redis:
-    external: true
