@@ -3,16 +3,35 @@ set -eo pipefail
 
 SCRIPT_DIR=$( dirname "${BASH_SOURCE[0]}" )
 SECRETS_DIR=$( cd $SCRIPT_DIR/../secrets && pwd )
+COMMAND=$1
+FILE_NAME=$2
+DECRYPTED_FILE_PATH=$SECRETS_DIR/.$FILE_NAME
+ENCRYPTED_FILE_PATH=$SECRETS_DIR/.encrypted_$FILE_NAME
 KMS_KEY_ID="alias/caronae_secrets_key"
 
 encrypt() {
-	aws kms encrypt --key-id $KMS_KEY_ID --plaintext fileb://$SECRETS_DIR/.$1 --output text --query CiphertextBlob > $SECRETS_DIR/.encrypted_$1
+	if ! [ -f $DECRYPTED_FILE_PATH ]; then
+		echo "Original file not found at '$DECRYPTED_FILE_PATH'"
+		exit 2
+	fi
+
+	aws kms encrypt --key-id $KMS_KEY_ID --plaintext fileb://$DECRYPTED_FILE_PATH --output text --query CiphertextBlob > $ENCRYPTED_FILE_PATH
 }
 
 decrypt() {
-	cat $SECRETS_DIR/.encrypted_$1 | base64 -di > /tmp/.$1
-	aws kms decrypt --ciphertext-blob fileb:///tmp/.$1 --output text --query Plaintext | base64 --decode > $SECRETS_DIR/.$1
-	rm /tmp/.$1
+	if ! [ -f $ENCRYPTED_FILE_PATH ]; then
+		echo "Encrypted file not found at '$ENCRYPTED_FILE_PATH'"
+		exit 2
+	fi
+
+	cat $ENCRYPTED_FILE_PATH | base64 -di > /tmp/.$FILE_NAME
+	aws kms decrypt --ciphertext-blob fileb:///tmp/.$FILE_NAME --output text --query Plaintext | base64 --decode > $DECRYPTED_FILE_PATH
+	rm /tmp/.$FILE_NAME
 }
 
-$1 $2
+if [ -z "$1" ] || [ -z "$2" ] ; then
+  echo "Usage: $0 <encrypt|decrypt> <file>\nExample: $0 decrypt env_prod"
+  exit 1
+fi
+
+$COMMAND
