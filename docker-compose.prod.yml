@@ -5,7 +5,7 @@ services:
     image: caronae/backend:${CARONAE_ENV_TAG}
     env_file:
       - config.env
-      - .env
+      - secrets/.env_prod
     restart: always
     logging:
       driver: awslogs
@@ -18,7 +18,7 @@ services:
     image: caronae/backend-worker:${CARONAE_ENV_TAG}
     env_file:
       - config.env
-      - .env
+      - secrets/.env_prod
     environment:
       - LOG_STREAM=php://stdout
     restart: always
@@ -37,7 +37,7 @@ services:
       - caronae-backend
     env_file:
       - config.env
-      - .env
+      - secrets/.env_prod
     restart: always
     logging:
       driver: awslogs
@@ -51,7 +51,7 @@ services:
     image: caronae/ufrj-authentication:${CARONAE_ENV_TAG}
     env_file:
       - config.env
-      - .env
+      - secrets/.env_prod
     restart: always
     logging:
       driver: awslogs

@@ -1,0 +1,18 @@
+#!/bin/sh
+set -eo pipefail
+
+SCRIPT_DIR=$( dirname "${BASH_SOURCE[0]}" )
+SECRETS_DIR=$( cd $SCRIPT_DIR/../secrets && pwd )
+KMS_KEY_ID="alias/caronae_secrets_key"
+
+encrypt() {
+	aws kms encrypt --key-id $KMS_KEY_ID --plaintext fileb://$SECRETS_DIR/.$1 --output text --query CiphertextBlob > $SECRETS_DIR/.encrypted_$1
+}
+
+decrypt() {
+	cat $SECRETS_DIR/.encrypted_$1 | base64 -di > /tmp/.$1
+	aws kms decrypt --ciphertext-blob fileb:///tmp/.$1 --output text --query Plaintext | base64 --decode > $SECRETS_DIR/.$1
+	rm /tmp/.$1
+}
+
+$1 $2
