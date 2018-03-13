@@ -9,8 +9,9 @@ RUN set -ex && apk --no-cache add \
     openssh-client \
     git \
     libxml2-dev \
-    curl-dev && \
-    apk --no-cache add postgresql-dev postgresql=9.6.7-r0 --repository http://dl-cdn.alpinelinux.org/alpine/v3.6/main/
+    curl-dev
+
+RUN apk --no-cache add postgresql-dev postgresql=9.6.8-r0 --repository http://dl-cdn.alpinelinux.org/alpine/v3.6/main/
 
 RUN docker-php-ext-install pdo pdo_pgsql pgsql zip xml curl mbstring
 
