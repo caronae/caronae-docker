@@ -61,8 +61,7 @@ services:
          awslogs-stream: ufrj-authentication
 
   nginx:
-    build:
-      args:
+    environment:
         - ENABLE_UFRJ_AUTHENTICATION=true
         - ENABLE_SSL=true
     volumes:

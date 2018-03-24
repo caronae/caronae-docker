@@ -32,10 +32,9 @@ services:
       - ../ufrj-authentication:/var/www/ufrj-authentication
 
   nginx:
-    build:
-      context: nginx
-      args:
-        - ENABLE_UFRJ_AUTHENTICATION=true
+    environment:
+      - ENABLE_UFRJ_AUTHENTICATION=true
+      - ENABLE_SSL=true
     volumes_from:
       - caronae-backend
       - caronae-ufrj-authentication

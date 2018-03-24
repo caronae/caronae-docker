@@ -19,8 +19,6 @@ services:
   nginx:
     container_name: nginx
     image: caronae/nginx
-    build:
-      context: nginx
     volumes_from:
       - caronae-backend
     ports:
