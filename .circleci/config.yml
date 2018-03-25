@@ -34,6 +34,12 @@ jobs:
       - *restore_repo
       - run: ssh -o StrictHostKeyChecking=No -A $CARONAE_DEV_USER@$CARONAE_DEV_HOST -p $CARONAE_DEV_PORT bash -s < scripts/deploy.sh "develop"
 
+  deploy-prod:
+    <<: *defaults
+    steps:
+      - *restore_repo
+      - run: ssh -o StrictHostKeyChecking=No -A $CARONAE_PROD_USER@$CARONAE_PROD_HOST -p $CARONAE_PROD_PORT bash -s < scripts/deploy.sh "latest"
+
 
 workflows:
   version: 2
@@ -44,3 +50,6 @@ workflows:
       - deploy-dev:
           requires:
             - validate-config
+      - deploy-prod:
+          requires:
+            - deploy-dev
