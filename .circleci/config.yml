@@ -17,7 +17,12 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.prod.yml config -q
+      - run:
+          name: Create sample env files
+          command: touch secrets/.env_prod secrets/.env_dev
+      - run:
+          name: Validate docker-compose
+          command: docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.prod.yml config -q
       - save_cache:
           key: v1-repo-{{ .Branch }}-{{ .Revision }}
           paths:
