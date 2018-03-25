@@ -2,8 +2,8 @@ version: 2
 
 references:
   defaults: &defaults
-    docker:
-      - image: alpine
+    machine:
+      enabled: true
 
   restore_repo: &restore_repo
     restore_cache:
@@ -37,3 +37,5 @@ workflows:
     jobs:
       - validate-config
       - deploy-dev
+          requires:
+            - validate-config
