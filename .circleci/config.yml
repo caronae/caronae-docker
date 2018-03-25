@@ -1,22 +1,39 @@
 version: 2
 
+references:
+  defaults: &defaults
+    docker:
+      - image: alpine
+
+  restore_repo: &restore_repo
+    restore_cache:
+      keys:
+        - v1-repo-{{ .Branch }}-{{ .Revision }}
+        - v1-repo-{{ .Branch }}
+        - v1-repo
+
 jobs:
-  build:
-    machine:
-      enabled: true
+  validate-config:
+    <<: *defaults
     steps:
       - checkout
-      - run:
-          name: Build images
-          command: docker build -t caronae/php:latest php
-      - run:
-          name: Publish images
-          command: |
-            docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker push caronae/php
+      - run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.prod.yml config -q
+      - save_cache:
+          key: v1-repo-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - .
+
+  deploy-dev:
+    <<: *defaults
+    steps:
+      - *restore_repo
+      - run: ssh -o StrictHostKeyChecking=No -A $CARONAE_DEV_USER@$CARONAE_DEV_HOST -p $CARONAE_DEV_PORT bash -s < scripts/deploy.sh "develop"
+
 
 workflows:
   version: 2
-  build_docker_images:
+
+  test-and-deploy:
     jobs:
-      - build
+      - validate-config
+      - deploy-dev
