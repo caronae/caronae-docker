@@ -1,5 +1,5 @@
 #!/bin/sh
-set -eo pipefail
+set -e
 
 SCRIPT_DIR=$( dirname "${BASH_SOURCE[0]}" )
 DOCKER_DIR="$SCRIPT_DIR/.."
