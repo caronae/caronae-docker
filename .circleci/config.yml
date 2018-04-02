@@ -18,11 +18,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Create sample env files
-          command: touch secrets/.env_prod secrets/.env_dev
-      - run:
           name: Validate docker-compose
-          command: docker-compose -f docker-compose.yml -f docker-compose.prod.yml config -q
+          command: scripts/validate.sh
       - save_cache:
           key: v1-repo-{{ .Branch }}-{{ .Revision }}
           paths:
