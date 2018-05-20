@@ -6,7 +6,7 @@ if [ $# -ne 2 ]; then
     exit 1
 fi
 
-sudo CARONAE_ENV_TAG=$1 SECRETS_ENV=$2 su
+sudo CARONAE_ENV_TAG=$1 SECRETS_ENV=$2 AWS_DEFAULT_REGION=$AWS_LOG_REGION su
 set -eo pipefail
 
 cd /var/caronae/caronae-docker
