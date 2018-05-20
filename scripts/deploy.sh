@@ -1,18 +1,22 @@
 #!/bin/sh
 set -eo pipefail
 
-if [ $# -eq 0 ]; then
-    echo "TAG is not defined. Usage: $0 <TAG>"
+if [ $# -ne 2 ]; then
+    echo "TAG or ENV are not defined. Usage: $0 <TAG> <ENV>"
     exit 1
 fi
 
-sudo CARONAE_ENV_TAG=$1 su
+sudo CARONAE_ENV_TAG=$1 SECRETS_ENV=$2 su
 set -eo pipefail
 
-echo "Updating caronae-docker..."
 cd /var/caronae/caronae-docker
+
+echo "Updating caronae-docker..."
 git fetch origin master
 git reset --hard origin/master
 
-echo "Updating using the tag $CARONAE_ENV_TAG"
+echo "Updating the secrets for $SECRETS_ENV..."
+scripts/kms decrypt "env_$SECRETS_ENV"
+
+echo "Updating docker-compose using the tag $CARONAE_ENV_TAG..."
 /usr/local/bin/docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d

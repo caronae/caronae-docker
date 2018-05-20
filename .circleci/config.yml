@@ -29,13 +29,13 @@ jobs:
     <<: *defaults
     steps:
       - *restore_repo
-      - run: ssh -o StrictHostKeyChecking=No -A $CARONAE_DEV_USER@$CARONAE_DEV_HOST -p $CARONAE_DEV_PORT bash -s < scripts/deploy.sh "develop"
+      - run: ssh -o StrictHostKeyChecking=No -A $CARONAE_DEV_USER@$CARONAE_DEV_HOST -p $CARONAE_DEV_PORT bash -s < scripts/deploy.sh "develop" "dev"
 
   deploy-prod:
     <<: *defaults
     steps:
       - *restore_repo
-      - run: ssh -o StrictHostKeyChecking=No -A $CARONAE_PROD_USER@$CARONAE_PROD_HOST -p $CARONAE_PROD_PORT bash -s < scripts/deploy.sh "latest"
+      - run: ssh -o StrictHostKeyChecking=No -A $CARONAE_PROD_USER@$CARONAE_PROD_HOST -p $CARONAE_PROD_PORT bash -s < scripts/deploy.sh "latest" "prod"
 
 
 workflows:
