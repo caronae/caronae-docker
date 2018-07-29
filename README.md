@@ -24,7 +24,7 @@ O ambiente de produção possui requisitos adicionais que devem ser configurados
 * certificados TLS em /var/caronae/certs
 
 ```bash
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build
+docker-compose up --build
 ```
 
 Todos os serviços ficam disponíveis na porta 443 e os requests são encaminhados para cada um de acordo com o host.

@@ -19,4 +19,4 @@ echo "Updating the secrets for $SECRETS_ENV..."
 scripts/kms decrypt "env_$SECRETS_ENV"
 
 echo "Updating docker-compose using the tag $CARONAE_ENV_TAG..."
-/usr/local/bin/docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+/usr/local/bin/docker-compose up -d

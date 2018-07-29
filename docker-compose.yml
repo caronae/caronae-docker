@@ -3,27 +3,94 @@ version: '2'
 services:
   caronae-backend:
     container_name: caronae-backend
-    image: caronae/backend
+    image: caronae/backend:${CARONAE_ENV_TAG}
     depends_on:
       - postgres
       - redis
-    env_file: config.env
+    env_file:
+      - config.env
+      - secrets/.env
+    restart: always
+    logging:
+      driver: awslogs
+      options:
+         awslogs-region: ${AWS_LOG_REGION}
+         awslogs-group: ${AWS_LOG_GROUP}
+         awslogs-stream: backend
 
   caronae-backend-worker:
     container_name: caronae-backend-worker
-    image: caronae/backend
+    image: caronae/backend:${CARONAE_ENV_TAG}
     command: queue
     depends_on:
       - caronae-backend
-    env_file: config.env
+    env_file:
+      - config.env
+      - secrets/.env
+    environment:
+      - LOG_STREAM=php://stdout
+    restart: always
+    logging:
+      driver: awslogs
+      options:
+         awslogs-region: ${AWS_LOG_REGION}
+         awslogs-group: ${AWS_LOG_GROUP}
+         awslogs-stream: backend-worker
+
+  caronae-backend-task-scheduler:
+    container_name: caronae-backend-task-scheduler
+    image: caronae/backend:${CARONAE_ENV_TAG}
+    command: scheduler
+    depends_on:
+      - caronae-backend
+    env_file:
+      - config.env
+      - secrets/.env
+    restart: always
+    logging:
+      driver: awslogs
+      options:
+         awslogs-region: ${AWS_LOG_REGION}
+         awslogs-group: ${AWS_LOG_GROUP}
+         awslogs-stream: backend-task-scheduler
+
+  caronae-ufrj-authentication:
+    container_name: caronae-ufrj-authentication
+    image: caronae/ufrj-authentication:${CARONAE_ENV_TAG}
+    env_file:
+      - config.env
+      - secrets/.env
+    restart: always
+    logging:
+      driver: awslogs
+      options:
+         awslogs-region: ${AWS_LOG_REGION}
+         awslogs-group: ${AWS_LOG_GROUP}
+         awslogs-stream: ufrj-authentication
 
   nginx:
     container_name: nginx
     image: caronae/nginx
+    environment:
+      - ENABLE_UFRJ_AUTHENTICATION=true
+      - ENABLE_SSL=true
+    volumes:
+      - /var/caronae/caronae-site:/var/caronae/caronae-site
+      - /var/caronae/certs:/etc/nginx/ssl
+      - /etc/letsencrypt:/etc/letsencrypt
     volumes_from:
       - caronae-backend
+      - caronae-ufrj-authentication
     ports:
-      - 8000:8000
+      - 80:80
+      - 443:443
+    restart: always
+    logging:
+      driver: awslogs
+      options:
+         awslogs-region: ${AWS_LOG_REGION}
+         awslogs-group: ${AWS_LOG_GROUP}
+         awslogs-stream: nginx
 
   postgres:
     container_name: postgres
@@ -33,7 +100,25 @@ services:
     environment:
       - POSTGRES_USER=caronae
       - POSTGRES_DB=caronae
+    volumes:
+      - /data/postgres:/var/lib/postgresql/data
+    restart: always
+    logging:
+      driver: awslogs
+      options:
+         awslogs-region: ${AWS_LOG_REGION}
+         awslogs-group: ${AWS_LOG_GROUP}
+         awslogs-stream: postgres
 
   redis:
     container_name: redis
     image: redis:alpine
+    volumes:
+      - /data/redis:/data
+    restart: always
+    logging:
+      driver: awslogs
+      options:
+         awslogs-region: ${AWS_LOG_REGION}
+         awslogs-group: ${AWS_LOG_GROUP}
+         awslogs-stream: redis
