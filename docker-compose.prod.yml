@@ -15,7 +15,7 @@ services:
          awslogs-stream: backend
 
   caronae-backend-worker:
-    image: caronae/backend-worker:${CARONAE_ENV_TAG}
+    image: caronae/backend:${CARONAE_ENV_TAG}
     env_file:
       - config.env
       - secrets/.env

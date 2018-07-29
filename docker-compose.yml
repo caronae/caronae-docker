@@ -11,7 +11,8 @@ services:
 
   caronae-backend-worker:
     container_name: caronae-backend-worker
-    image: caronae/backend-worker
+    image: caronae/backend
+    command: php /var/www/artisan queue:work --sleep=2 --tries=3
     depends_on:
       - caronae-backend
     env_file: config.env
