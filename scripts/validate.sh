@@ -11,4 +11,4 @@ fi
 CARONAE_ENV_TAG="" \
 AWS_LOG_GROUP="" \
 AWS_LOG_REGION="" \
-/usr/local/bin/docker-compose -f "$DOCKER_DIR/docker-compose.yml" -f "$DOCKER_DIR/docker-compose.prod.yml" config -q
+/usr/local/bin/docker-compose -f "$DOCKER_DIR/docker-compose.yml" config -q
