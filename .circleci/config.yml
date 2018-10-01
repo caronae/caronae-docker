@@ -50,6 +50,10 @@ workflows:
           filters:
             branches:
               only: master
-      - deploy-prod:
+      - hold-prod:
+          type: approval
           requires:
             - deploy-dev
+      - deploy-prod:
+          requires:
+            - hold-prod
