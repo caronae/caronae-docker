@@ -28,3 +28,21 @@ docker-compose up --build
 ```
 
 Todos os serviços ficam disponíveis na porta 443 e os requests são encaminhados para cada um de acordo com o host.
+
+
+## Variáveis de ambiente sensíveis
+
+Os ambientes possuem algumas variáveis de ambiente sensíveis, como a API key do Firebase Cloud Messaging.
+Pra manter essas variáveis protegidas, elas estão em arquivos na pasta secrets criptografados usando
+o [AWS Key Management Service](https://aws.amazon.com/kms/).
+
+Se você tem acesso às chaves do KMS e já configurou o seu CLI da AWS, você pode decriptá-las usando
+o script kms:
+
+```bash
+./scripts/kms decrypt env_prod
+./scripts/kms decrypt env_dev
+```
+
+Uma vez que os arquivos foram decriptados, você pode modificá-los e encriptá-los novamente usando a
+ação `encrypt` ao invés de `decrypt`.

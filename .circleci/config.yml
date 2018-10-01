@@ -47,6 +47,9 @@ workflows:
       - deploy-dev:
           requires:
             - validate-config
+          filters:
+            branches:
+              only: master
       - deploy-prod:
           requires:
             - deploy-dev
