@@ -71,19 +71,12 @@ services:
   nginx:
     container_name: nginx
     image: caronae/nginx
-    environment:
-      - ENABLE_UFRJ_AUTHENTICATION=true
-      - ENABLE_SSL=true
-    volumes:
-      - /var/caronae/caronae-site:/var/caronae/caronae-site
-      - /var/caronae/certs:/etc/nginx/ssl
-      - /etc/letsencrypt:/etc/letsencrypt
     volumes_from:
       - caronae-backend
       - caronae-ufrj-authentication
     ports:
-      - 80:80
-      - 443:443
+      - 8000:8000
+      - 8001:8001
     restart: always
     logging:
       driver: awslogs
